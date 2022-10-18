@@ -8,8 +8,8 @@ class TetrisGame : Game
     SpriteBatch spriteBatch;
     InputHelper inputHelper;
     GameWorld gameWorld;
-    
 
+    public static int Score { get; set; }
     public static ContentManager ContentManager { get; private set; }
     
     public static Point ScreenSize { get; private set; }

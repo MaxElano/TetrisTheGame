@@ -13,8 +13,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{80527DF2-F9E3-4571-8A4B-DA4DC3A0A971}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{80527DF2-F9E3-4571-8A4B-DA4DC3A0A971}.Debug|x86.Build.0 = Debug|Any CPU
-		{80527DF2-F9E3-4571-8A4B-DA4DC3A0A971}.Release|x86.ActiveCfg = Release|x86
-		{80527DF2-F9E3-4571-8A4B-DA4DC3A0A971}.Release|x86.Build.0 = Release|x86
+		{80527DF2-F9E3-4571-8A4B-DA4DC3A0A971}.Release|x86.ActiveCfg = Release|Any CPU
+		{80527DF2-F9E3-4571-8A4B-DA4DC3A0A971}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,7 +9,7 @@ class GameWorld
 {
     public static Random Random { get { return random; } }
     static Random random;
-    int level = 1, previousLevel;
+    int level = 1, previousLevel = 1;
     double timer;
 
     SpriteFont font;

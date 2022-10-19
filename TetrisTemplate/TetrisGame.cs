@@ -78,10 +78,20 @@ class TetrisGame : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.White);
-        if (GameWorld.GetGameState() == GameWorld.GameState.MENU)
-            menu.Draw(gameTime, spriteBatch);
-        if (GameWorld.GetGameState() == GameWorld.GameState.GAME)
-            gameWorld.Draw(gameTime, spriteBatch);
+        
+        switch (GameWorld.GetGameState())
+        {
+            case GameWorld.GameState.MENU:
+                menu.Draw(gameTime, spriteBatch);
+                gameWorld.Reset();
+                break;
+            case GameWorld.GameState.GAME:
+                gameWorld.Draw(gameTime, spriteBatch);
+                break;
+            case GameWorld.GameState.GAMEOVER:
+                break;
+
+        }
     }
 }
 

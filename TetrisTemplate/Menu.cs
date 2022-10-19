@@ -25,24 +25,29 @@ class Menu
         
         if (inputHelper.MouseLeftButtonPressed())
         {
-            GameWorld.SetGameState(GameWorld.GameState.GAME);
             gameWorld.Reset();
+            GameWorld.SetGameState(GameWorld.GameState.GAME);
         }
     }
     
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        text = "Start Game";
-        MeasureText(text);
-        position = new Vector2(TetrisGame.ScreenSize.X/2, TetrisGame.ScreenSize.Y/2);
         spriteBatch.Begin();
-        spriteBatch.DrawString(font, text, position-textLength/2, Color.Black);
+        if (GameWorld.GetGameState() == GameWorld.GameState.MENU)
+        {
+            Text("Start game by clicking Mouse1!", spriteBatch);
+        } else if (GameWorld.GetGameState() == GameWorld.GameState.GAMEOVER)
+        {
+            Text("GG Press space to return to menu", spriteBatch);
+        }
         spriteBatch.End();
     }
 
-    private Vector2 MeasureText(string text)
+    //Draw any text in the middle of the screen
+    private void Text(string text, SpriteBatch spriteBatch)
     {
         textLength = font.MeasureString(text);
-        return textLength;
+        position = new Vector2(TetrisGame.ScreenSize.X / 2, TetrisGame.ScreenSize.Y / 2);
+        spriteBatch.DrawString(font, text, position - textLength / 2, Color.Black);
     }
 }

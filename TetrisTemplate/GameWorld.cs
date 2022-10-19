@@ -19,7 +19,7 @@ class GameWorld
 
     public enum GameState
     {
-        MENU, GAME
+        MENU, GAME, GAMEOVER
     }
     private static GameState gameState = new GameState();
 

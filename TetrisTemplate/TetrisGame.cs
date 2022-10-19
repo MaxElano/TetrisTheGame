@@ -12,6 +12,8 @@ class TetrisGame : Game
     GraphicsDeviceManager graphics;
     
 
+
+    public static int Score { get; set; }
     public static ContentManager ContentManager { get; private set; }
     
     public static Point ScreenSize { get; private set; }
@@ -21,6 +23,11 @@ class TetrisGame : Game
     {
         TetrisGame game = new TetrisGame();
         game.Run();
+    }
+
+    public enum GameState
+    {
+        preGame, game, postGame
     }
 
     public TetrisGame()

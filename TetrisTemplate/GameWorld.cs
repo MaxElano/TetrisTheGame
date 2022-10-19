@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -10,14 +9,13 @@ class GameWorld
 {
     public static Random Random { get { return random; } }
     static Random random;
+    int level = 1, previousLevel;
+    double timer;
 
     SpriteFont font;
 
-    bool blockAction = false;
-
     TetrisGrid grid;
-    TetrisBlock block;
-    Point blockPosition;
+    TetrisBlock currentBlock, nextBlock;
 
     public enum GameState
     {
@@ -30,58 +28,90 @@ class GameWorld
         random = new Random();
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
         grid = new TetrisGrid();
-
+        nextBlock = WhichBlock();
+        StartBlock();
     }
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
     {
         if (inputHelper.KeyPressed(Keys.Left))
         {
-            blockPosition.X -= 1;
-            //if(!block.AllowedHere(grid.ArrayGrid, blockPosition))
-            //    blockPosition.X += 1;
+            currentBlock.PositionX -= 1;
+            if(!currentBlock.AllowedHere(grid.ArrayGrid))
+                currentBlock.PositionX += 1;
         }
         if (inputHelper.KeyPressed(Keys.Right))
         {
-            blockPosition.X += 1;
-            //if (!block.AllowedHere(grid.ArrayGrid, blockPosition))
-            //    blockPosition.X -= 1;
+            currentBlock.PositionX += 1;
+            if (!currentBlock.AllowedHere(grid.ArrayGrid))
+                currentBlock.PositionX -= 1;
         }
         if (inputHelper.KeyPressed(Keys.Down))
         {
-            blockPosition.Y += 1;
-            //if (!block.AllowedHere(grid.ArrayGrid, blockPosition))
-            //    blockPosition.Y -= 1;
+            currentBlock.PositionY += 1;
+            if (!currentBlock.AllowedHere(grid.ArrayGrid))
+            {
+                currentBlock.PositionY -= 1;
+                currentBlock.PlaceOnGrid(grid.ArrayGrid);
+                grid.FullRow();
+                StartBlock();
+            }
         }
         if (inputHelper.KeyPressed(Keys.A))
         {
-            block.Rotate(3);
-            //check if v
+            currentBlock.Rotate(currentBlock.Array, 3);
+            if (!currentBlock.AllowedHere(grid.ArrayGrid))
+                currentBlock.Rotate(currentBlock.Array, 1);
         }
         if (inputHelper.KeyPressed(Keys.D))
         {
-            block.Rotate(1);
+            currentBlock.Rotate(currentBlock.Array, 1);
+            if (!currentBlock.AllowedHere(grid.ArrayGrid))
+                currentBlock.Rotate(currentBlock.Array, 3);
+        }
+        if (inputHelper.KeyPressed(Keys.Space))
+        {
+            bool allTheWayDown = false;
+            while (!allTheWayDown)
+            {
+                currentBlock.PositionY += 1;
+                if (!currentBlock.AllowedHere(grid.ArrayGrid))
+                {
+                    currentBlock.PositionY -= 1;
+                    currentBlock.PlaceOnGrid(grid.ArrayGrid);
+                    grid.FullRow();
+                    StartBlock();
+                    allTheWayDown = true;
+                }
+            }
         }
     }
 
     public void Update(GameTime gameTime)
     {
         grid.Update(gameTime);
-        
-            //Create starting block
-        if (!blockAction)
+        currentBlock.Update(gameTime, grid, level);
+        //Create starting block
+        if (!currentBlock.BlockAction)
         {
             StartBlock();
-            blockAction = true;
+            if (!currentBlock.AllowedHere(grid.ArrayGrid))
+                ;
+                    //Change gameState to lose.
         }
+        
+        
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
         spriteBatch.Begin();
-        
         grid.Draw(gameTime, spriteBatch);
-        BlockDraw(spriteBatch, blockPosition);
+        currentBlock.Draw(spriteBatch, grid);
+        nextBlock.Draw(spriteBatch, grid);
+        spriteBatch.DrawString(font, "Score: " + TetrisGame.Score, new Vector2(11 * grid.CellSize, 7 * grid.CellSize), Color.Black);
+        spriteBatch.DrawString(font, "Level: " + level, new Vector2(11 * grid.CellSize, 8 * grid.CellSize), Color.Black);
+        LevelUp(spriteBatch, gameTime);
         spriteBatch.End();
     }
 
@@ -112,35 +142,43 @@ class GameWorld
         }
     }
 
-    private void StartBlock()
+    //This is the first block that starts on the screen and every new block used. It also places the block as high up as possible
+    public void StartBlock()
     {
-        block = WhichBlock();
-        blockPosition.X = 3;
+        currentBlock = nextBlock;
+        nextBlock = WhichBlock();
+        nextBlock.PositionX = 11;
+        nextBlock.PositionY = 1;
+        currentBlock.PositionX = 3;
         bool line = false;
         int yOffset = 0;
         for (int j = 0; line == false && j < 4 ; j++)
         {
             for (int i = 0; line == false && i < 4; i++)
             {
-                if (block.Array[j, i])
+                if (currentBlock.Array[j, i])
                 {
                     line = true;
                     yOffset = -j;
                 }
             }
         }
-        blockPosition.Y = yOffset;
+        currentBlock.PositionY = yOffset;
     }
 
-    private void BlockDraw(SpriteBatch spriteBatch, Point position)
+    //Method that checks if you have leveled up and displays it on the screen
+    public int LevelUp(SpriteBatch spriteBatch, GameTime gameTime)
     {
-        for (int i = 0; i < 4; i++)
+        int score = TetrisGame.Score;
+        level = score / 100;
+        if (level == 0)
+            level = 1;
+        if (level != previousLevel)
+            timer = 5;
+        if (timer > 0)
         {
-            for (int j = 0; j < 4; j++)
-            {
-                if (block.Array[j, i] == true)
-                    spriteBatch.Draw(grid.EmptyCell, new Vector2(position.X * grid.CellSize + i * grid.CellSize, position.Y * grid.CellSize + j * grid.CellSize), grid.WhichColor(block.Color));
-            }
+            spriteBatch.DrawString(font, "Level Up!", new Vector2(5 * grid.CellSize, 8 * grid.CellSize), Color.Firebrick);
+            timer = timer - gameTime.ElapsedGameTime.TotalSeconds;
         }
     }
 
@@ -152,5 +190,8 @@ class GameWorld
     public static GameState GetGameState()
     {
         return gameState;
+
+        previousLevel = level;
+        return level;
     }
 }

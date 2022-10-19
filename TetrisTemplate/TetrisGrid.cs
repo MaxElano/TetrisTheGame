@@ -1,20 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Diagnostics;
+
 
 public class TetrisGrid
 {
-    Point positionBlock;
     Texture2D emptyCell;
     Vector2 positionCell;
-
-    TetrisBlock block;
     
     enum FigureColors { empty, blue, orange, yellow, green, purple, red, cyan }
-    FigureColors figureColor = new FigureColors();
 
     public int Width { get { return width; } }
     const int width = 10;
@@ -50,7 +43,6 @@ public class TetrisGrid
 
     public int[,] ArrayGrid { get { return arrayGrid; } }
 
-    /// <param name="b"></param>
     public TetrisGrid()
     {
         emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
@@ -73,7 +65,6 @@ public class TetrisGrid
             {
                 positionCell = new Vector2(i*emptyCell.Width, j*emptyCell.Height);
                 spriteBatch.Draw(emptyCell, positionCell, Color.White);
-
 
                 spriteBatch.Draw(emptyCell, positionCell, WhichColor(arrayGrid[j, i]));
             }
@@ -109,6 +100,39 @@ public class TetrisGrid
             default:
                 return Color.White;
         }
+    }
+
+    public void FullRow()
+    {
+        int fullRows = 0;
+        bool rowFull;
+
+        //Check every row in the grid
+        for (int j = 0; j < Height; j++)
+        {
+            rowFull = true;
+            //Check if the row is not full
+            for (int i = 0; i < Width; i++)
+            {
+                if (arrayGrid[j, i] == 0)
+                        rowFull = false;
+            }
+            //If the row is full then move every row above that one down
+            if (rowFull)
+            {
+                fullRows++;
+                for (int b = j; b > 0; b--)
+                {
+                    for (int i = 0; i < Width; i++)
+                    {
+                        arrayGrid[b, i] = arrayGrid[b - 1, i];
+                    }
+                }
+                j--;
+            }
+                
+        }
+        TetrisGame.Score += fullRows * fullRows * 10;
     }
 }
 

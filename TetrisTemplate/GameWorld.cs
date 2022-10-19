@@ -19,15 +19,16 @@ class GameWorld
     TetrisBlock block;
     Point blockPosition;
 
-    GameState gameState = new GameState();
+    public enum GameState
+    {
+        MENU, GAME
+    }
+    private static GameState gameState = new GameState();
 
     public GameWorld()
     {
         random = new Random();
-        gameState = GameState.game;
-
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
-
         grid = new TetrisGrid();
 
     }
@@ -141,5 +142,15 @@ class GameWorld
                     spriteBatch.Draw(grid.EmptyCell, new Vector2(position.X * grid.CellSize + i * grid.CellSize, position.Y * grid.CellSize + j * grid.CellSize), grid.WhichColor(block.Color));
             }
         }
+    }
+
+    public static void SetGameState(GameState newGameState)
+    {
+        gameState = newGameState;
+    }
+
+    public static GameState GetGameState()
+    {
+        return gameState;
     }
 }

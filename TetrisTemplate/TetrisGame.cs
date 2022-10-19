@@ -8,6 +8,8 @@ class TetrisGame : Game
     SpriteBatch spriteBatch;
     InputHelper inputHelper;
     GameWorld gameWorld;
+    Menu menu;
+    GraphicsDeviceManager graphics;
     
 
     public static ContentManager ContentManager { get; private set; }
@@ -19,11 +21,6 @@ class TetrisGame : Game
     {
         TetrisGame game = new TetrisGame();
         game.Run();
-    }
-
-    public enum GameState
-    {
-        preGame, game, postGame
     }
 
     public TetrisGame()
@@ -46,6 +43,7 @@ class TetrisGame : Game
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
         gameWorld = new GameWorld();
+        menu = new Menu(graphics);
         gameWorld.Reset();
     }
 
@@ -54,13 +52,24 @@ class TetrisGame : Game
         inputHelper.Update(gameTime);
         gameWorld.HandleInput(gameTime, inputHelper);
         gameWorld.Update(gameTime);
+        if (GameWorld.GetGameState() == GameWorld.GameState.MENU)
+        {
+            menu.Update(gameTime, inputHelper);
+            IsMouseVisible = true;
+        }
+        else
+        {
+            IsMouseVisible = false;
+        }
     }
 
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.White);
-        gameWorld.Draw(gameTime, spriteBatch);
-        
+        if (GameWorld.GetGameState() == GameWorld.GameState.MENU)
+            menu.Draw(gameTime, spriteBatch);
+        if (GameWorld.GetGameState() == GameWorld.GameState.GAME)
+            gameWorld.Draw(gameTime, spriteBatch);
     }
 }
 

@@ -6,7 +6,7 @@ public class TetrisBlock
     int color;
     bool[,] arrayBlock = new bool[4, 4];
     Point position;
-    double previousTime;
+    double previousTime = 2000;
     static double deltaTime = 2000, deltaDifference = 0.5;
     bool blockAction = true;
 
@@ -200,10 +200,10 @@ public class I : TetrisBlock
 {
     bool[,] arrayBlock = new bool[4, 4]
     {
-        {false, true, false, false},
-        {false, true, false, false},
-        {false, true, false, false},
-        {false, true, false, false},
+        {false, false, false, false},
+        {false, false, false, false},
+        {true, true, true, true},
+        {false, false, false, false},
     };
     //Color = Cyan
     int color = 7;

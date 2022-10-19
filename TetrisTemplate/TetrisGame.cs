@@ -57,8 +57,7 @@ class TetrisGame : Game
     protected override void Update(GameTime gameTime)
     {
         inputHelper.Update(gameTime);
-        gameWorld.HandleInput(gameTime, inputHelper);
-        gameWorld.Update(gameTime);
+        
         if (GameWorld.GetGameState() == GameWorld.GameState.MENU)
         {
             menu.Update(gameTime, inputHelper);
@@ -67,6 +66,12 @@ class TetrisGame : Game
         else
         {
             IsMouseVisible = false;
+        }
+
+        if (GameWorld.GetGameState() == GameWorld.GameState.GAME)
+        {
+            gameWorld.HandleInput(gameTime, inputHelper);
+            gameWorld.Update(gameTime);
         }
     }
 

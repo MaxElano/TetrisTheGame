@@ -96,11 +96,10 @@ class GameWorld
         {
             StartBlock();
             if (!currentBlock.AllowedHere(grid.ArrayGrid))
-                ;
-                    //Change gameState to lose.
+            {
+                SetGameState(GameState.MENU);
+            }       
         }
-        
-        
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -117,6 +116,10 @@ class GameWorld
 
     public void Reset()
     {
+        grid.Clear();
+        level = 1;
+        timer = 0;
+        
     }
 
     //Chooses a random (starting) block
@@ -180,18 +183,19 @@ class GameWorld
             spriteBatch.DrawString(font, "Level Up!", new Vector2(5 * grid.CellSize, 8 * grid.CellSize), Color.Firebrick);
             timer = timer - gameTime.ElapsedGameTime.TotalSeconds;
         }
+        previousLevel = level;
+        return level;
     }
 
+    //Method that changes the current gamestate
     public static void SetGameState(GameState newGameState)
     {
         gameState = newGameState;
     }
 
+    //Method that returns the current gamestate
     public static GameState GetGameState()
     {
         return gameState;
-
-        previousLevel = level;
-        return level;
     }
 }

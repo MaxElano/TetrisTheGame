@@ -11,18 +11,23 @@ class Menu
     SpriteFont font;
     string text;
     GraphicsDeviceManager graphics;
+    GameWorld gameWorld;
 
     public Menu(GraphicsDeviceManager _graphics)
     {
         graphics = _graphics;
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
+        gameWorld = new GameWorld();
     }
 
     public void Update(GameTime gameTime, InputHelper inputHelper)
     {
         
         if (inputHelper.MouseLeftButtonPressed())
+        {
             GameWorld.SetGameState(GameWorld.GameState.GAME);
+            gameWorld.Reset();
+        }
     }
     
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

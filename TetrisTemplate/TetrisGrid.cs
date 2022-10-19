@@ -75,6 +75,13 @@ public class TetrisGrid
     // Clears the grid.
     public void Clear()
     {
+        for (int i = 0; i < Width; i++)
+        {
+            for (int j = 0; j < Height; j++)
+            {
+                arrayGrid[j, i] = 0;
+            }
+        }
     }
 
     //Changes the ints to colors

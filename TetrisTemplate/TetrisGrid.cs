@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 
@@ -6,6 +7,7 @@ public class TetrisGrid
 {
     Texture2D emptyCell;
     Vector2 positionCell;
+    SoundEffect clearSound;
     
     enum FigureColors { empty, blue, orange, yellow, green, purple, red, cyan }
 
@@ -46,6 +48,7 @@ public class TetrisGrid
     public TetrisGrid()
     {
         emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
+        clearSound = TetrisGame.ContentManager.Load<SoundEffect>("TetrisClear");
         positionCell = Vector2.Zero;
         Clear();
         cellSize = emptyCell.Width;
@@ -136,6 +139,7 @@ public class TetrisGrid
                     }
                 }
                 j--;
+                clearSound.Play();
             }
                 
         }

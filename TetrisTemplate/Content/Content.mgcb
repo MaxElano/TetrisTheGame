@@ -39,3 +39,15 @@
 /processorParam:TextureFormat=Compressed
 /build:SpelFont.spritefont
 
+#begin TetrisClear.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:TetrisClear.mp3
+
+#begin TetrisMusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:TetrisMusic.mp3
+

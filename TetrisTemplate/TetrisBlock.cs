@@ -1,19 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 public class TetrisBlock
 {
     int color;
     bool[,] arrayBlock = new bool[4, 4];
     Point position;
-    double previousTime = 2000;
+    static double previousTime = 2000;
     static double deltaTime = 1000, deltaDifference = 1.0;
     bool blockAction = true;
 
 
     public TetrisBlock()
 	{
-	}
+    }
 
     //Automaticly moves down the block
     public void Update(GameTime gameTime, TetrisGrid grid, int level)
@@ -92,31 +93,42 @@ public class TetrisBlock
     //Checks whether the block is allowed on that location
     public bool AllowedHere(int[,] grid)
     {
-        Vector3 actualBlock = ActualBlockGrid(Array);
-
-        if (position.X + actualBlock.X < 0 || position.X + actualBlock.Y > grid.GetLength(1) - 1 || position.Y + actualBlock.Z > grid.GetLength(0) - 1 || position.Y < 0)
+        Vector4 actualBlock = ActualBlockGrid(Array);
+        if (position.X + actualBlock.X < 0 || position.X + actualBlock.Y > grid.GetLength(1) - 1 || position.Y + actualBlock.Z > grid.GetLength(0) - 1)
+        {
             return false;
+        }
         for (int i = 0; i < Size; i++)
         {
-            for (int j = 0; j < Size; j++)
+            for (int j = (int)actualBlock.W; j < Size; j++)
             {
                 if (Array[j, i])
-                    if (grid[position.Y + j, position.X + i] != 0)
+                {
+                    if (position.Y + j < 0)
+                    {
                         return false;
+                    }
+                    if (grid[position.Y + j, position.X + i] != 0)
+                    {
+                        return false;
+                    }
+                }
             }
         }
         return true;
     }
 
     //Gets the "actual" size of the moving block, usefull for checking the grid borders with the "actual" borders of the block
-    private Vector3 ActualBlockGrid(bool[,] array)
+    public Vector4 ActualBlockGrid(bool[,] array)
     {
         int leftSide = 0;
         int rightSide = 0;
         int botSide = 0;
+        int topSide = 0;
         bool checkLeft = true;
         bool checkRight = true;
         bool checkBot = true;
+        bool checkTop = true;
 
         for (int i = 0; i < Size && checkLeft; i++)
         {
@@ -153,8 +165,20 @@ public class TetrisBlock
                 }
             }
         }
+        
+        for (int j = 0; j < Size && checkTop; j++)
+        {
+            for (int i = 0; i < Size; i++)
+            {
+                if (array[j, i])
+                {
+                    topSide = j;
+                    checkTop = false;
+                }
+            }
+        }
 
-        return new Vector3(leftSide, rightSide, botSide);
+        return new Vector4(leftSide, rightSide, botSide, topSide);
     }
 
     virtual public bool[,] Array { get { return arrayBlock; } }

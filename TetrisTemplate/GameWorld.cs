@@ -108,7 +108,7 @@ class GameWorld
         if (inputHelper.MouseRightButtonPressed() && GetGameState() == GameState.MENU)
             TetrisGame.Score += 100;
 
-            if (GetGameState() == GameState.GAME)
+        if (GetGameState() == GameState.GAME)
         {
             grid.Update(gameTime);
             currentBlock.Update(gameTime, grid, level);
@@ -179,20 +179,7 @@ class GameWorld
         nextBlock.PositionX = 11;
         nextBlock.PositionY = 1;
         currentBlock.PositionX = 3;
-        bool line = false;
-        int yOffset = 0;
-        for (int j = 0; line == false && j < 4 ; j++)
-        {
-            for (int i = 0; line == false && i < 4; i++)
-            {
-                if (currentBlock.Array[j, i])
-                {
-                    line = true;
-                    yOffset = -j;
-                }
-            }
-        }
-        currentBlock.PositionY = yOffset;
+        currentBlock.PositionY = -(int)currentBlock.ActualBlockGrid(currentBlock.Array).W;
     }
 
     //Method that checks if you have leveled up and displays it on the screen

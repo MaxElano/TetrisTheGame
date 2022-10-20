@@ -52,7 +52,7 @@ class TetrisGame : Game
         spriteBatch = new SpriteBatch(GraphicsDevice);
         MediaPlayer.Play(Content.Load<Song>("TetrisMusic"));
         gameWorld = new GameWorld();
-        menu = new Menu(graphics);
+        menu = new Menu(graphics, gameWorld);
         gameWorld.Reset();
     }
 

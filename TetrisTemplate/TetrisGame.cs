@@ -15,8 +15,8 @@ class TetrisGame : Game
 
     public static int Score { get; set; }
     public static ContentManager ContentManager { get; private set; }
-    
     public static Point ScreenSize { get; private set; }
+    
 
     [STAThread]
     static void Main(string[] args)
@@ -57,21 +57,22 @@ class TetrisGame : Game
     protected override void Update(GameTime gameTime)
     {
         inputHelper.Update(gameTime);
-        
-        if (GameWorld.GetGameState() == GameWorld.GameState.MENU)
-        {
-            menu.Update(gameTime, inputHelper);
-            IsMouseVisible = true;
-        }
-        else
-        {
-            IsMouseVisible = false;
-        }
 
-        if (GameWorld.GetGameState() == GameWorld.GameState.GAME)
+        switch (GameWorld.GetGameState())
         {
-            gameWorld.HandleInput(gameTime, inputHelper);
-            gameWorld.Update(gameTime);
+            case GameWorld.GameState.MENU:
+                gameWorld.Update(gameTime, inputHelper);
+                IsMouseVisible = true;
+                break;
+            case GameWorld.GameState.GAME:
+                gameWorld.HandleInput(gameTime, inputHelper);
+                gameWorld.Update(gameTime, inputHelper);
+                IsMouseVisible = false;
+                break;
+            case GameWorld.GameState.GAMEOVER:
+                gameWorld.Update(gameTime, inputHelper);
+                IsMouseVisible = true;
+                break;
         }
     }
 
@@ -82,13 +83,15 @@ class TetrisGame : Game
         switch (GameWorld.GetGameState())
         {
             case GameWorld.GameState.MENU:
+                gameWorld.Draw(gameTime, spriteBatch);
                 menu.Draw(gameTime, spriteBatch);
-                gameWorld.Reset();
                 break;
             case GameWorld.GameState.GAME:
                 gameWorld.Draw(gameTime, spriteBatch);
                 break;
             case GameWorld.GameState.GAMEOVER:
+                gameWorld.Draw(gameTime, spriteBatch);
+                menu.Draw(gameTime, spriteBatch);
                 break;
 
         }

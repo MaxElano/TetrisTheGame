@@ -25,12 +25,12 @@
 /processorParam:TextureFormat=Color
 /build:block.png
 
-#begin File.spritefont
+#begin MenuFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:File.spritefont
+/build:MenuFont.spritefont
 
 #begin SpelFont.spritefont
 /importer:FontDescriptionImporter

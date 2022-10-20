@@ -17,11 +17,19 @@ class GameWorld
     TetrisGrid grid;
     TetrisBlock currentBlock, nextBlock;
 
+    InputHelper inputHelper;
+
     public enum GameState
     {
         MENU, GAME, GAMEOVER
     }
     private static GameState gameState = new GameState();
+
+    public int Level
+    {
+        get { return level; }
+        set { level = value; }
+    }
 
     public GameWorld()
     {
@@ -29,6 +37,7 @@ class GameWorld
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
         grid = new TetrisGrid();
         nextBlock = WhichBlock();
+        inputHelper = new InputHelper();
         StartBlock();
     }
 
@@ -87,18 +96,36 @@ class GameWorld
         }
     }
 
-    public void Update(GameTime gameTime)
+    public void Update(GameTime gameTime, InputHelper inputHelper)
     {
-        grid.Update(gameTime);
-        currentBlock.Update(gameTime, grid, level);
+        if (inputHelper.MouseLeftButtonPressed() && GetGameState() == GameState.MENU)
+        {
+            SetGameState(GameState.GAME);
+            Reset();
+        }
+
+        if (inputHelper.MouseRightButtonPressed() && GetGameState() == GameState.MENU)
+            TetrisGame.Score += 100;
+
+            if (GetGameState() == GameState.GAME)
+        {
+            grid.Update(gameTime);
+            currentBlock.Update(gameTime, grid, level);
+        }
         //Create starting block
         if (!currentBlock.BlockAction)
         {
             StartBlock();
             if (!currentBlock.AllowedHere(grid.ArrayGrid))
             {
-                SetGameState(GameState.MENU);
+                SetGameState(GameState.GAMEOVER);
             }       
+        }
+
+        if (inputHelper.MouseLeftButtonPressed() && GetGameState() == GameState.GAMEOVER)
+        {
+            SetGameState(GameState.MENU);
+            TetrisGame.Score = 0;
         }
     }
 
@@ -117,9 +144,7 @@ class GameWorld
     public void Reset()
     {
         grid.Clear();
-        level = 1;
         timer = 0;
-        
     }
 
     //Chooses a random (starting) block

@@ -41,6 +41,7 @@ class GameWorld
         StartBlock();
     }
 
+    //Movement
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
     {
         if (inputHelper.KeyPressed(Keys.Left))

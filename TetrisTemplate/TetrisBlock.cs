@@ -7,7 +7,7 @@ public class TetrisBlock
     bool[,] arrayBlock = new bool[4, 4];
     Point position;
     double previousTime = 2000;
-    static double deltaTime = 2000, deltaDifference = 0.5;
+    static double deltaTime = 1000, deltaDifference = 1.0;
     bool blockAction = true;
 
 
@@ -26,8 +26,8 @@ public class TetrisBlock
             {
                 PositionY -= 1;
                 PlaceOnGrid(grid.ArrayGrid);
-                grid.FullRow();
                 blockAction = false;
+                grid.FullRow();
             }
         }
     }

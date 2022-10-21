@@ -5,7 +5,7 @@ using System.Reflection.Metadata.Ecma335;
 
 public class TetrisGrid
 {
-    Texture2D emptyCell;
+    Texture2D emptyCell, bombCell;
     Vector2 positionCell;
     SoundEffect clearSound;
     
@@ -18,6 +18,8 @@ public class TetrisGrid
     public int CellSize { get { return cellSize; } }
     public int cellSize;
     public Texture2D EmptyCell { get { return emptyCell; } }
+    public Texture2D BombCell { get { return bombCell; } }
+
 
     int[,] arrayGrid = new int[height, width] 
     { 
@@ -48,6 +50,7 @@ public class TetrisGrid
     public TetrisGrid()
     {
         emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
+        bombCell = TetrisGame.ContentManager.Load<Texture2D>("TNT");
         clearSound = TetrisGame.ContentManager.Load<SoundEffect>("TetrisClear");
         positionCell = Vector2.Zero;
         Clear();
@@ -114,7 +117,7 @@ public class TetrisGrid
             case (FigureColors.pink):
                 return Color.DeepPink;
             case (FigureColors.bomb):
-                return Color.Black;
+                return Color.White;
             default:
                 return Color.White;
         }

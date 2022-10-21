@@ -70,8 +70,16 @@ public class TetrisBlock
         {
             for (int j = 0; j < Size; j++)
             {
-                if (Array[j, i])
-                    spriteBatch.Draw(grid.EmptyCell, new Vector2((position.X + i) * grid.CellSize, (position.Y + j) * grid.CellSize), grid.WhichColor(this.Color));
+                if (Color == 11)
+                {
+                    if (Array[j, i])
+                        spriteBatch.Draw(grid.BombCell, new Vector2((position.X + i) * grid.CellSize, (position.Y + j) * grid.CellSize), grid.WhichColor(this.Color));
+                }
+                else
+                {
+                    if (Array[j, i])
+                        spriteBatch.Draw(grid.EmptyCell, new Vector2((position.X + i) * grid.CellSize, (position.Y + j) * grid.CellSize), grid.WhichColor(this.Color));
+                }
             }
         }
     }

@@ -12,11 +12,11 @@ class Menu
     GraphicsDeviceManager graphics;
     GameWorld gameWorld;
 
-    public Menu(GraphicsDeviceManager _graphics)
+    public Menu(GraphicsDeviceManager _graphics, GameWorld _gameWorld)
     {
         graphics = _graphics;
         font = TetrisGame.ContentManager.Load<SpriteFont>("MenuFont");
-        gameWorld = new GameWorld();
+        gameWorld = _gameWorld;
     }
 
 

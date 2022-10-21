@@ -26,7 +26,7 @@ public class TetrisBlock
             if (!AllowedHere(grid.ArrayGrid))
             {
                 PositionY -= 1;
-                PlaceOnGrid(grid.ArrayGrid);
+                PlaceOnGrid(grid);
                 blockAction = false;
                 grid.FullRow();
             }
@@ -77,17 +77,23 @@ public class TetrisBlock
     }
 
     //Places the block that is moving on to the fixed grid
-    public int[,] PlaceOnGrid(int[,] grid)
+    public int[,] PlaceOnGrid(TetrisGrid grid)
     {
         for (int i = 0; i < Size; i++)
         {
             for (int j = 0; j < Size; j++)
             {
-                if (Array[j, i])
-                    grid[j + position.Y, i + position.X] = Color;
+                if (Color != 11)
+                {
+                    if (Array[j, i])
+                        grid.ArrayGrid[j + position.Y, i + position.X] = Color;
+                }
+                else
+                    if(position.Y + j >= 0 && position.Y + j < grid.Height && position.X + i >= 0 && position.X + i < grid.Width)
+                        grid.ArrayGrid[j + position.Y, i + position.X] = 0;
             }
         }
-        return grid;
+        return grid.ArrayGrid;
     }
 
     //Checks whether the block is allowed on that location
@@ -333,6 +339,21 @@ public class Q : TetrisBlock
     };
     //Color = Pink
     int color = 10;
+    override public bool[,] Array { get { return arrayBlock; } }
+    override public int Color { get { return color; } }
+    override public int Size { get { return Array.GetLength(0); } }
+}
+
+public class Bomb : TetrisBlock
+{
+    bool[,] arrayBlock = new bool[3, 3]
+    {
+        {false, false, false},
+        {false, true, false},
+        {false, false, false},
+    };
+    //Color = Bomb
+    int color = 11;
     override public bool[,] Array { get { return arrayBlock; } }
     override public int Color { get { return color; } }
     override public int Size { get { return Array.GetLength(0); } }

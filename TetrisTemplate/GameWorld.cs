@@ -62,7 +62,7 @@ class GameWorld
             if (!currentBlock.AllowedHere(grid.ArrayGrid))
             {
                 currentBlock.PositionY -= 1;
-                currentBlock.PlaceOnGrid(grid.ArrayGrid);
+                currentBlock.PlaceOnGrid(grid);
                 grid.FullRow();
                 StartBlock();
             }
@@ -88,7 +88,7 @@ class GameWorld
                 if (!currentBlock.AllowedHere(grid.ArrayGrid))
                 {
                     currentBlock.PositionY -= 1;
-                    currentBlock.PlaceOnGrid(grid.ArrayGrid);
+                    currentBlock.PlaceOnGrid(grid);
                     grid.FullRow();
                     StartBlock();
                     allTheWayDown = true;
@@ -151,7 +151,11 @@ class GameWorld
     //Chooses a random (starting) block
     private TetrisBlock WhichBlock()
     {
-        int number = (int)GameWorld.Random.Next(9);
+        int amountOfObjects = 7;
+        //if(...)
+            amountOfObjects += 3;
+            
+        int number = (int)GameWorld.Random.Next(amountOfObjects);
         switch (number)
         {
             case (0):
@@ -172,6 +176,8 @@ class GameWorld
                 return new P();
             case (8):
                 return new Q();
+            case (9):
+                return new Bomb();
             default:
                 return new T();
         }

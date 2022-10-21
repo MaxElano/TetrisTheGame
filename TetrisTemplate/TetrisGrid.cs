@@ -9,7 +9,7 @@ public class TetrisGrid
     Vector2 positionCell;
     SoundEffect clearSound;
     
-    enum FigureColors { empty, blue, orange, yellow, green, purple, red, cyan, gold, brown, pink }
+    enum FigureColors { empty, blue, orange, yellow, green, purple, red, cyan, gold, brown, pink, bomb }
 
     public int Width { get { return width; } }
     const int width = 10;
@@ -67,7 +67,7 @@ public class TetrisGrid
             for(int j = 0; j < Height; j++)
             {
                 positionCell = new Vector2(i*emptyCell.Width, j*emptyCell.Height);
-                spriteBatch.Draw(emptyCell, positionCell, Color.White);
+                //spriteBatch.Draw(emptyCell, positionCell, Color.White);
 
                 spriteBatch.Draw(emptyCell, positionCell, WhichColor(arrayGrid[j, i]));
             }
@@ -113,6 +113,8 @@ public class TetrisGrid
                 return Color.Brown;
             case (FigureColors.pink):
                 return Color.DeepPink;
+            case (FigureColors.bomb):
+                return Color.Black;
             default:
                 return Color.White;
         }

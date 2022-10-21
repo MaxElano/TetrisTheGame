@@ -31,7 +31,7 @@ class Menu
         } else if (GameWorld.GetGameState() == GameWorld.GameState.GAMEOVER)
         {
             Text("GG Press Mouse1 to return to menu", spriteBatch, 130, 0);
-            Text("Your reached level " + gameWorld.Level + "!", spriteBatch, 130, 30);
+            Text("You've reached level " + gameWorld.Level + "!", spriteBatch, 130, 30);
         }
         spriteBatch.End();
     }

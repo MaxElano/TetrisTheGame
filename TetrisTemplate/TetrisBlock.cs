@@ -83,14 +83,14 @@ public class TetrisBlock
         {
             for (int j = 0; j < Size; j++)
             {
-                if (Color != 11)
+                if (Color == 11)
                 {
-                    if (Array[j, i])
-                        grid.ArrayGrid[j + position.Y, i + position.X] = Color;
+                    if (position.Y + j >= 0 && position.Y + j < grid.Height && position.X + i >= 0 && position.X + i < grid.Width)
+                        grid.ArrayGrid[j + position.Y, i + position.X] = 0;
                 }
                 else
-                    if(position.Y + j >= 0 && position.Y + j < grid.Height && position.X + i >= 0 && position.X + i < grid.Width)
-                        grid.ArrayGrid[j + position.Y, i + position.X] = 0;
+                    if (Array[j, i])
+                        grid.ArrayGrid[j + position.Y, i + position.X] = Color;
             }
         }
         return grid.ArrayGrid;

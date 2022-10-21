@@ -79,9 +79,9 @@ public class TetrisBlock
     //Places the block that is moving on to the fixed grid
     public int[,] PlaceOnGrid(int[,] grid)
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < Size; i++)
         {
-            for (int j = 0; j < 4; j++)
+            for (int j = 0; j < Size; j++)
             {
                 if (Array[j, i])
                     grid[j + position.Y, i + position.X] = Color;
@@ -190,12 +190,11 @@ public class TetrisBlock
 
 public class L : TetrisBlock
 {
-    bool[,] arrayBlock = new bool[4, 4]
+    bool[,] arrayBlock = new bool[3, 3]
     {
-        {false, true, false, false},
-        {false, true, false, false},
-        {false, true, true, false},
-        {false, false, false, false},
+        {false, true, false},
+        {false, true, false},
+        {false, true, true},    
     };
     //Color = Orange
     int color = 2;
@@ -206,12 +205,11 @@ public class L : TetrisBlock
 
 public class J : TetrisBlock
 {
-    bool[,] arrayBlock = new bool[4, 4]
+    bool[,] arrayBlock = new bool[3, 3]
     {
-        {false, false, true, false},
-        {false, false, true, false},
-        {false, true, true, false},
-        {false, false, false, false},
+        {false, false, true},
+        {false, false, true},
+        {false, true, true},
     };
     //Color = Blue
     int color = 1;
@@ -238,12 +236,10 @@ public class I : TetrisBlock
 
 public class O : TetrisBlock
 {
-    bool[,] arrayBlock = new bool[4, 4]
+    bool[,] arrayBlock = new bool[2, 2]
     {
-        {false, false, false, false},
-        {false, true, true, false},
-        {false, true, true, false},
-        {false, false, false, false},
+        {true, true},
+        {true, true},
     };
     //Color = Yellow
     int color = 3;
@@ -254,13 +250,11 @@ public class O : TetrisBlock
 
 public class Z : TetrisBlock
 {
-    bool[,] arrayBlock = new bool[4, 4]
+    bool[,] arrayBlock = new bool[3, 3]
     {
-        {false, false, false, false},
-        {true, true, false, false},
-        {false, true, true, false},
-        {false, false, false, false},
-
+        {false, false, false},
+        {true, true, false},
+        {false, true, true},
     };
     //Color = Red
     int color = 6;
@@ -271,12 +265,11 @@ public class Z : TetrisBlock
 
 public class S : TetrisBlock
 {
-    bool[,] arrayBlock = new bool[4, 4]
+    bool[,] arrayBlock = new bool[3, 3]
     {
-        {false, false, false, false},
-        {false, true, true, false},
-        {true, true, false, false},
-        {false, false, false, false},
+        {false, false, false},
+        {false, true, true},
+        {true, true, false},
     };
     //Color = Green
     int color = 4;
@@ -287,12 +280,11 @@ public class S : TetrisBlock
 
 public class T : TetrisBlock
 {
-    bool[,] arrayBlock = new bool[4, 4]
+    bool[,] arrayBlock = new bool[3, 3]
     {
-        {false, false, false, false},
-        {false, true, false, false},
-        {true, true, true, false},
-        {false, false, false, false},
+        {false, false, false},
+        {false, true, false},
+        {true, true, true},
     };
     //Color = Purple
     int color = 5;
@@ -303,12 +295,11 @@ public class T : TetrisBlock
 
 public class U : TetrisBlock
 {
-    bool[,] arrayBlock = new bool[4, 4]
+    bool[,] arrayBlock = new bool[3, 3]
     {
-        {false, false, false, false},
-        {true, false, true, false},
-        {true, true, true, false},
-        {false, false, false, false},
+        {false, false, false},
+        {true, false, true},
+        {true, true, true},
     };
     //Color = Gold
     int color = 8;
@@ -319,12 +310,11 @@ public class U : TetrisBlock
 
 public class P : TetrisBlock
 {
-    bool[,] arrayBlock = new bool[4, 4]
+    bool[,] arrayBlock = new bool[3, 3]
     {
-        {true, false, false, false},
-        {true, true, false, false},
-        {false, true, true, false},
-        {false, false, false, false},
+        {true, false, false},
+        {true, true, false},
+        {false, true, true},
     };
     //Color = Brown
     int color = 9;
@@ -335,12 +325,11 @@ public class P : TetrisBlock
 
 public class Q : TetrisBlock
 {
-    bool[,] arrayBlock = new bool[4, 4]
+    bool[,] arrayBlock = new bool[3, 3]
     {
-        {false, false, false, false},
-        {false, true, false, false},
-        {true, true, true, false},
-        {false, true, false, false},
+        {false, true, false},
+        {true, true, true},
+        {false, true, false},
     };
     //Color = Pink
     int color = 10;

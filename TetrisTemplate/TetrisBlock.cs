@@ -300,3 +300,51 @@ public class T : TetrisBlock
     override public int Color { get { return color; } }
     override public int Size { get { return Array.GetLength(0); } }
 }
+
+public class U : TetrisBlock
+{
+    bool[,] arrayBlock = new bool[4, 4]
+    {
+        {false, false, false, false},
+        {true, false, true, false},
+        {true, true, true, false},
+        {false, false, false, false},
+    };
+    //Color = Gold
+    int color = 8;
+    override public bool[,] Array { get { return arrayBlock; } }
+    override public int Color { get { return color; } }
+    override public int Size { get { return Array.GetLength(0); } }
+}
+
+public class P : TetrisBlock
+{
+    bool[,] arrayBlock = new bool[4, 4]
+    {
+        {true, false, false, false},
+        {true, true, false, false},
+        {false, true, true, false},
+        {false, false, false, false},
+    };
+    //Color = Brown
+    int color = 9;
+    override public bool[,] Array { get { return arrayBlock; } }
+    override public int Color { get { return color; } }
+    override public int Size { get { return Array.GetLength(0); } }
+}
+
+public class Q : TetrisBlock
+{
+    bool[,] arrayBlock = new bool[4, 4]
+    {
+        {false, false, false, false},
+        {false, true, false, false},
+        {true, true, true, false},
+        {false, true, false, false},
+    };
+    //Color = Pink
+    int color = 10;
+    override public bool[,] Array { get { return arrayBlock; } }
+    override public int Color { get { return color; } }
+    override public int Size { get { return Array.GetLength(0); } }
+}

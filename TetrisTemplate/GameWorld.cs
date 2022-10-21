@@ -151,7 +151,7 @@ class GameWorld
     //Chooses a random (starting) block
     private TetrisBlock WhichBlock()
     {
-        int number = (int)GameWorld.Random.Next(7);
+        int number = (int)GameWorld.Random.Next(9);
         switch (number)
         {
             case (0):
@@ -166,6 +166,12 @@ class GameWorld
                 return new Z();
             case (5):
                 return new S();
+            case (6):
+                return new U();
+            case (7):
+                return new P();
+            case (8):
+                return new Q();
             default:
                 return new T();
         }
@@ -189,6 +195,8 @@ class GameWorld
         level = score / 100;
         if (level == 0)
             level = 1;
+        if (level == 1)
+            return level;
         if (level != previousLevel)
             timer = 5;
         if (timer > 0)

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-
+using System.Reflection.Metadata.Ecma335;
 
 public class TetrisGrid
 {
@@ -9,7 +9,7 @@ public class TetrisGrid
     Vector2 positionCell;
     SoundEffect clearSound;
     
-    enum FigureColors { empty, blue, orange, yellow, green, purple, red, cyan }
+    enum FigureColors { empty, blue, orange, yellow, green, purple, red, cyan, gold, brown, pink }
 
     public int Width { get { return width; } }
     const int width = 10;
@@ -107,6 +107,12 @@ public class TetrisGrid
                 return Color.Purple;
             case (FigureColors.red):
                 return Color.Red;
+            case (FigureColors.gold):
+                return Color.DarkGoldenrod;
+            case (FigureColors.brown):
+                return Color.Brown;
+            case (FigureColors.pink):
+                return Color.DeepPink;
             default:
                 return Color.White;
         }

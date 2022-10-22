@@ -5,11 +5,14 @@ using System.Reflection.Metadata.Ecma335;
 
 public class TetrisGrid
 {
-    Texture2D emptyCell, bombCell;
+    Texture2D emptyCell, bombCell, explosionCell;
     Vector2 positionCell;
     SoundEffect clearSound;
     
-    enum FigureColors { empty, blue, orange, yellow, green, purple, red, cyan, gold, brown, pink, bomb }
+    enum FigureColors { empty, blue, orange, yellow, green, purple, red, cyan, gold, brown, pink, bomb, explosion }
+
+    public bool bombBool { get; set; }
+    double bombTimer = 0.3;
 
     public int Width { get { return width; } }
     const int width = 10;
@@ -51,6 +54,7 @@ public class TetrisGrid
     {
         emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
         bombCell = TetrisGame.ContentManager.Load<Texture2D>("TNT");
+        explosionCell = TetrisGame.ContentManager.Load<Texture2D>("explosion");
         clearSound = TetrisGame.ContentManager.Load<SoundEffect>("TetrisClear");
         positionCell = Vector2.Zero;
         Clear();
@@ -59,7 +63,23 @@ public class TetrisGrid
 
     public void Update(GameTime gameTime)
     {
-
+        if(bombBool)
+        {
+            bombTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+            if (bombTimer <= 0)
+            {
+                for (int i = 0; i < Width; i++)
+                {
+                    for (int j = 0; j < Height; j++)
+                    {
+                        if (arrayGrid[j, i] == 12)
+                            arrayGrid[j, i] = 0;
+                    }
+                }
+                bombBool = false;
+                bombTimer = 0.3;
+            }
+        }
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -70,9 +90,11 @@ public class TetrisGrid
             for(int j = 0; j < Height; j++)
             {
                 positionCell = new Vector2(i*emptyCell.Width, j*emptyCell.Height);
-                //spriteBatch.Draw(emptyCell, positionCell, Color.White);
 
-                spriteBatch.Draw(emptyCell, positionCell, WhichColor(arrayGrid[j, i]));
+                if (arrayGrid[j, i] == (int)FigureColors.explosion)
+                    spriteBatch.Draw(explosionCell, positionCell, WhichColor(arrayGrid[j, i]));
+                else
+                    spriteBatch.Draw(emptyCell, positionCell, WhichColor(arrayGrid[j, i]));
             }
         }
   
@@ -117,6 +139,8 @@ public class TetrisGrid
             case (FigureColors.pink):
                 return Color.DeepPink;
             case (FigureColors.bomb):
+                return Color.White;
+            case (FigureColors.explosion):
                 return Color.White;
             default:
                 return Color.White;

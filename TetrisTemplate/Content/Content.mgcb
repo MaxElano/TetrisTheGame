@@ -37,6 +37,12 @@
 /processorParam:TextureFormat=Color
 /build:explosion.png
 
+#begin ExplosionSound.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:ExplosionSound.mp3
+
 #begin MenuFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

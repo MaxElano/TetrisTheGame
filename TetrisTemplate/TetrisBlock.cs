@@ -94,7 +94,10 @@ public class TetrisBlock
                 if (Color == 11)
                 {
                     if (position.Y + j >= 0 && position.Y + j < grid.Height && position.X + i >= 0 && position.X + i < grid.Width)
-                        grid.ArrayGrid[j + position.Y, i + position.X] = 12;
+                    {
+                        grid.ArrayGrid[j + position.Y, i + position.X] = 0;
+                        grid.EffectGrid[j + position.Y, i + position.X] = 1;
+                    }
                     grid.bombBool = true;
                 }
                 else

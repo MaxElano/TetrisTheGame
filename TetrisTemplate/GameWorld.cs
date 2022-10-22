@@ -195,7 +195,7 @@ class GameWorld
             nextBlock = WhichBlock();
             nextBlock.PositionX = 11;
             nextBlock.PositionY = 1;
-            currentBlock.PositionX = 3;
+            currentBlock.PositionX = grid.Width / 2 - currentBlock.Size / 2 - (int)currentBlock.ActualBlockGrid(currentBlock.Array).X;
             currentBlock.PositionY = -(int)currentBlock.ActualBlockGrid(currentBlock.Array).W;
     }
 

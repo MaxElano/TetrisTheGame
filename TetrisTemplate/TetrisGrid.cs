@@ -9,8 +9,8 @@ public class TetrisGrid
     Vector2 positionCell;
     SoundEffect clearSound;
     
-    enum FigureColors { empty, blue, orange, yellow, green, purple, red, cyan, gold, brown, pink, bomb, explosion }
-
+    enum FigureColors { empty, blue, orange, yellow, green, purple, red, cyan, gold, brown, pink, bomb}
+    enum Effects { none, explosion}
     public bool bombBool { get; set; }
     double bombTimer = 0.3;
 
@@ -23,31 +23,10 @@ public class TetrisGrid
     public Texture2D EmptyCell { get { return emptyCell; } }
     public Texture2D BombCell { get { return bombCell; } }
 
+    int[,] effectGrid = new int[height, width];
+    int[,] arrayGrid = new int[height, width];
 
-    int[,] arrayGrid = new int[height, width] 
-    { 
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-    };
-
+    public int[,] EffectGrid { get { return effectGrid; } }
     public int[,] ArrayGrid { get { return arrayGrid; } }
 
     public TetrisGrid()
@@ -72,8 +51,8 @@ public class TetrisGrid
                 {
                     for (int j = 0; j < Height; j++)
                     {
-                        if (arrayGrid[j, i] == 12)
-                            arrayGrid[j, i] = 0;
+                        if (effectGrid[j, i] == 1)
+                            effectGrid[j, i] = 0;
                     }
                 }
                 bombBool = false;
@@ -91,10 +70,9 @@ public class TetrisGrid
             {
                 positionCell = new Vector2(i*emptyCell.Width, j*emptyCell.Height);
 
-                if (arrayGrid[j, i] == (int)FigureColors.explosion)
-                    spriteBatch.Draw(explosionCell, positionCell, WhichColor(arrayGrid[j, i]));
-                else
-                    spriteBatch.Draw(emptyCell, positionCell, WhichColor(arrayGrid[j, i]));
+                spriteBatch.Draw(emptyCell, positionCell, WhichColor(arrayGrid[j, i]));
+                if (effectGrid[j, i] != 0)
+                    spriteBatch.Draw(WhichSprite(effectGrid[j, i]), positionCell, Color.White);
             }
         }
   
@@ -140,10 +118,20 @@ public class TetrisGrid
                 return Color.DeepPink;
             case (FigureColors.bomb):
                 return Color.White;
-            case (FigureColors.explosion):
-                return Color.White;
             default:
                 return Color.White;
+        }
+    }
+
+    public Texture2D WhichSprite(int j)
+    {
+        Effects effect = (Effects)j;
+        switch (effect)
+        {
+            case (Effects.explosion):
+                return explosionCell;
+            default:
+                return emptyCell;
         }
     }
 
@@ -159,7 +147,7 @@ public class TetrisGrid
             //Check if the row is not full
             for (int i = 0; i < Width; i++)
             {
-                if (arrayGrid[j, i] == 0 || arrayGrid[j, i] == (int)FigureColors.explosion)
+                if (arrayGrid[j, i] == 0)
                     rowFull = false;
             }
             //If the row is full then move every row above that one down
@@ -196,5 +184,7 @@ public class TetrisGrid
                 }
             } 
     }
+
+
 }
 

@@ -156,5 +156,21 @@ public class TetrisGrid
         }
         TetrisGame.Score += fullRows * fullRows * 10;
     }
+
+    //Grays out all of the currently existing blocks
+    public void GrayGrid(Color color, SpriteBatch spriteBatch)
+    {
+        Vector2 pos;
+        for (int i = 0; i < Width; i++)
+            for (int j = 0; j < Height; j++)
+            {
+                
+                if (arrayGrid[j,i] != 0)
+                {
+                    pos = new Vector2(i*cellSize, j*cellSize);
+                    spriteBatch.Draw(emptyCell, pos, Color.Gray);
+                }
+            } 
+    }
 }
 

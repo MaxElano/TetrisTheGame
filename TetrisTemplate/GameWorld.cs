@@ -99,6 +99,7 @@ class GameWorld
 
     public void Update(GameTime gameTime, InputHelper inputHelper)
     {
+        //Sets gamestate to GAME
         if (inputHelper.MouseLeftButtonPressed() && GetGameState() == GameState.MENU)
         {
             SetGameState(GameState.GAME);
@@ -108,12 +109,13 @@ class GameWorld
         if (inputHelper.MouseRightButtonPressed() && GetGameState() == GameState.MENU)
             TetrisGame.Score += 100;
 
+        //Starts game when gamestate is set to GAME
         if (GetGameState() == GameState.GAME)
         {
             grid.Update(gameTime);
             currentBlock.Update(gameTime, grid, level);
         }
-        //Create starting block
+        //Create starting block and sets gamestate to GAMEOVER
         if (!currentBlock.BlockAction)
         {
             StartBlock();
@@ -123,6 +125,7 @@ class GameWorld
             }       
         }
 
+        //Sets gamestate to MENU
         if (inputHelper.MouseLeftButtonPressed() && GetGameState() == GameState.GAMEOVER)
         {
             SetGameState(GameState.MENU);
@@ -139,6 +142,8 @@ class GameWorld
         spriteBatch.DrawString(font, "Score: " + TetrisGame.Score, new Vector2(11 * grid.CellSize, 7 * grid.CellSize), Color.Black);
         spriteBatch.DrawString(font, "Level: " + level, new Vector2(11 * grid.CellSize, 8 * grid.CellSize), Color.Black);
         LevelUp(spriteBatch, gameTime);
+        if (GetGameState() != GameState.GAME)
+            grid.GrayGrid(Color.Gray, spriteBatch);
         spriteBatch.End();
     }
 

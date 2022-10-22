@@ -159,8 +159,8 @@ public class TetrisGrid
             //Check if the row is not full
             for (int i = 0; i < Width; i++)
             {
-                if (arrayGrid[j, i] == 0)
-                        rowFull = false;
+                if (arrayGrid[j, i] == 0 || arrayGrid[j, i] == (int)FigureColors.explosion)
+                    rowFull = false;
             }
             //If the row is full then move every row above that one down
             if (rowFull)
@@ -174,7 +174,7 @@ public class TetrisGrid
                     }
                 }
                 j--;
-                clearSound.Play();
+                clearSound.Play(0.5f, 0f, 0f);
             }
                 
         }

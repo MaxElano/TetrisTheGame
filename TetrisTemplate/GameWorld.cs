@@ -186,12 +186,12 @@ class GameWorld
     //This is the first block that starts on the screen and every new block used. It also places the block as high up as possible
     public void StartBlock()
     {
-        currentBlock = nextBlock;
-        nextBlock = WhichBlock();
-        nextBlock.PositionX = 11;
-        nextBlock.PositionY = 1;
-        currentBlock.PositionX = 3;
-        currentBlock.PositionY = -(int)currentBlock.ActualBlockGrid(currentBlock.Array).W;
+            currentBlock = nextBlock;
+            nextBlock = WhichBlock();
+            nextBlock.PositionX = 11;
+            nextBlock.PositionY = 1;
+            currentBlock.PositionX = 3;
+            currentBlock.PositionY = -(int)currentBlock.ActualBlockGrid(currentBlock.Array).W;
     }
 
     //Method that checks if you have leveled up and displays it on the screen

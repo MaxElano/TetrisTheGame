@@ -97,7 +97,7 @@ public class TetrisBlock
             {
                 if (Color == 11)
                 {
-                    explosionSound.Play(0.1f, 0f, 0f);
+                    explosionSound.Play(0.01f, 0f, 0f);
                     if (position.Y + j >= 0 && position.Y + j < grid.Height && position.X + i >= 0 && position.X + i < grid.Width)
                     {
                         grid.ArrayGrid[j + position.Y, i + position.X] = 0;

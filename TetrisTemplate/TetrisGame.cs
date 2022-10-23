@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;
-using System.Reflection.Emit;
 
 class TetrisGame : Game
 {
@@ -52,7 +51,7 @@ class TetrisGame : Game
         spriteBatch = new SpriteBatch(GraphicsDevice);
         MediaPlayer.Play(Content.Load<Song>("TetrisMusic"));
         gameWorld = new GameWorld();
-        menu = new Menu(graphics, gameWorld);
+        menu = new Menu(gameWorld);
         gameWorld.Reset();
     }
 
@@ -66,7 +65,10 @@ class TetrisGame : Game
         {
             case GameWorld.GameState.MENU:
                 gameWorld.Update(gameTime, inputHelper);
+                menu.Update(gameTime);
                 IsMouseVisible = true;
+                if (inputHelper.MouseLeftButtonPressed() == true && menu.Check(new Vector2(400, 380), new Vector2(8, 2), inputHelper))
+                    Exit();
                 break;
             case GameWorld.GameState.GAME:
                 gameWorld.HandleInput(gameTime, inputHelper);
@@ -82,15 +84,15 @@ class TetrisGame : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.White);
+        GraphicsDevice.Clear(Color.Black);
         
         switch (GameWorld.GetGameState())
         {
             case GameWorld.GameState.MENU:
-                gameWorld.Draw(gameTime, spriteBatch);
                 menu.Draw(gameTime, spriteBatch);
                 break;
             case GameWorld.GameState.GAME:
+                GraphicsDevice.Clear(Color.White);
                 gameWorld.Draw(gameTime, spriteBatch);
                 break;
             case GameWorld.GameState.GAMEOVER:

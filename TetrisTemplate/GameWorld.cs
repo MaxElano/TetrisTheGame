@@ -11,11 +11,13 @@ class GameWorld
     static Random random;
     int level = 1, previousLevel = 1;
     double timer;
+    bool chaosMode = false;
 
     SpriteFont font;
 
     TetrisGrid grid;
     TetrisBlock currentBlock, nextBlock;
+    Menu menu;
 
     InputHelper inputHelper;
 
@@ -31,12 +33,15 @@ class GameWorld
         set { level = value; }
     }
 
+    public bool ChaosMode { get { return chaosMode; } } 
+
     public GameWorld()
     {
         random = new Random();
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
         grid = new TetrisGrid();
         nextBlock = WhichBlock();
+        menu = new Menu(this);
         inputHelper = new InputHelper();
         StartBlock();
     }
@@ -100,13 +105,14 @@ class GameWorld
     public void Update(GameTime gameTime, InputHelper inputHelper)
     {
         //Sets gamestate to GAME
-        if (inputHelper.MouseLeftButtonPressed() && GetGameState() == GameState.MENU)
+        if (inputHelper.MouseLeftButtonPressed() && GetGameState() == GameState.MENU && menu.Check(new Vector2(400,300),new Vector2(8,2), inputHelper))
         {
             SetGameState(GameState.GAME);
             Reset();
         }
 
-        if (inputHelper.MouseRightButtonPressed() && GetGameState() == GameState.MENU)
+        //Manually increases starting level
+        if (inputHelper.MouseLeftButtonPressed() && GetGameState() == GameState.MENU && menu.Check(new Vector2(400, 460), new Vector2(8, 2), inputHelper))
             TetrisGame.Score += 100;
 
         //Starts game when gamestate is set to GAME
@@ -126,10 +132,19 @@ class GameWorld
         }
 
         //Sets gamestate to MENU
-        if (inputHelper.MouseLeftButtonPressed() && GetGameState() == GameState.GAMEOVER)
+        if (inputHelper.MouseLeftButtonPressed() && GetGameState() == GameState.GAMEOVER && menu.Check(new Vector2(400, 380), new Vector2(12, 2), inputHelper))
         {
             SetGameState(GameState.MENU);
             TetrisGame.Score = 0;
+        }
+
+        //Chaos mode switch
+        if (inputHelper.MouseLeftButtonPressed() && GetGameState() == GameState.MENU && menu.Check(new Vector2(50, 550), new Vector2(2, 2), inputHelper))
+        {
+            if(chaosMode == true)
+                chaosMode = false;
+            else
+                chaosMode = true;
         }
     }
 
@@ -140,9 +155,9 @@ class GameWorld
         currentBlock.Draw(spriteBatch, grid);
         nextBlock.Draw(spriteBatch, grid);
         spriteBatch.DrawString(font, "Score: " + TetrisGame.Score, new Vector2(11 * grid.CellSize, 7 * grid.CellSize), Color.Black);
-        spriteBatch.DrawString(font, "Level: " + level, new Vector2(11 * grid.CellSize, 8 * grid.CellSize), Color.Black);
+        spriteBatch.DrawString(font, "Level: " + (level-1), new Vector2(11 * grid.CellSize, 8 * grid.CellSize), Color.Black);
         LevelUp(spriteBatch, gameTime);
-        if (GetGameState() != GameState.GAME)
+        if (gameState != GameState.GAME)
             grid.GrayGrid(Color.Gray, spriteBatch);
         spriteBatch.End();
     }
@@ -157,8 +172,8 @@ class GameWorld
     private TetrisBlock WhichBlock()
     {
         int amountOfObjects = 7;
-        //if(...)
-            amountOfObjects += 3;
+        if(chaosMode == true)
+            amountOfObjects += 4;
             
         int number = (int)GameWorld.Random.Next(amountOfObjects);
         switch (number)
@@ -176,15 +191,17 @@ class GameWorld
             case (5):
                 return new S();
             case (6):
-                return new U();
+                return new T();
             case (7):
-                return new P();
+                return new U();
             case (8):
-                return new Q();
+                return new P();
             case (9):
+                return new Q();
+            case (10):
                 return new Bomb();
             default:
-                return new T();
+                return null;
         }
     }
 

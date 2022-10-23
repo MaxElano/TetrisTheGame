@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-
 class InputHelper
 {
     MouseState currentMouseState, previousMouseState;
@@ -18,6 +17,7 @@ class InputHelper
     public Vector2 MousePosition
     {
         get { return new Vector2(currentMouseState.X, currentMouseState.Y); }
+
     }
 
     public bool MouseLeftButtonPressed()
